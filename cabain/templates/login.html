@@ -1,0 +1,24 @@
+{% extends 'layout.html' %}
+{% block title %}Ingresar{% endblock %}
+
+{% block body %}
+<div class="alert alert-info display-1 text-center">Iniciar sesión</div>
+<form method="POST">
+    <table class="table">
+        {{ form.as_table }}
+        {% csrf_token %}
+
+        <tr>
+            <td></td>
+            <td><a href="{% url 'registro' %}" class="btn btn-outline-secondary">Registrarse</a></td>
+        </tr>
+        <tr>
+            <td>
+                <a href="{% url 'listado_regiones' %}" class="btn btn-outline-secondary">Volver</a>
+            </td>
+            <td>
+                <input type="submit" value="Iniciar sesion" class="btn btn-primary"></td>
+        </tr>
+    </table>
+</form>
+{% endblock %}

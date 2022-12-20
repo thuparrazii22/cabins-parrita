@@ -1,0 +1,30 @@
+{% extends 'metodo_pago.html' %}
+
+<!-- Modal -->
+{% block onload %}onload="onLoadModal('actualizarMetodoPago');"{% endblock onload %}
+
+{% block moreBody %}
+<div class="modal fade" id="actualizarMetodoPago" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Editar Método de pago</h1>
+          <a type="button" class="btn-close" href="{% url 'payment_method' %}" aria-label="Close"></a>
+        </div>
+        <div class="modal-body">
+            <form id="formMetodoPago" method="POST">
+                <table class="table">
+                    {{ form.as_table }}
+                    {% csrf_token %}
+                </table>
+            </form>
+        </div>
+        <div class="modal-footer">
+          <a href="{% url 'payment_method' %}" class="btn btn-secondary">Cerrar</a>
+          <button type="submit" form="formMetodoPago" class="btn btn-primary">Ingresar</button>
+        </div>
+      </div>
+      
+    </div>
+</div>
+{% endblock %}

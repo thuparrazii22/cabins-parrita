@@ -1,0 +1,20 @@
+{% extends 'layout.html' %}
+{% block title %}Ingresar{% endblock %}
+
+{% block body %}
+<div class="alert alert-info display-1 text-center">Ingresar Region</div>
+<form method="POST">
+    <table class="table">
+        {{ form.as_table }}
+        {% csrf_token %}
+
+        <tr>
+            <td>
+                <a href="{% url 'listado_regiones' %}" class="btn btn-outline-secondary">Volver</a>
+            </td>
+            <td>
+                <input type="submit" value="Ingresar región" class="btn btn-primary"></td>
+        </tr>
+    </table>
+</form>
+{% endblock %}

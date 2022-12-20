@@ -1,0 +1,73 @@
+{% extends 'layout.html' %}
+{% block title %}Ingresar{% endblock %}
+{% block head %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<script type="text/javascript">
+    $(window).on('load', function() {
+        $('#addUnitModal').modal('show');
+    });
+</script>
+{% endblock %}
+
+{% block body %}
+<div class="alert alert-info display-1 text-center">Unidades de Medida</div>
+
+{% if unidades %}
+    <table class="table table-striped table-inverse table-responsive">
+        <thead class="thead-inverse">
+            <tr>
+                <th>Id</th>
+                <th>Nombre unidad</th>
+                <th>Símbolo</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for unidad in unidades %}
+            <tr>
+                <td>{{ unidad.id }}</td>
+                <td>{{ unidad.unit_name}}</td>
+                <td>{{ unidad.symbol }}</td>
+                <td><a href="{% url 'actualizar_unidad_medida' id=unidad.id %}" class="btn btn-success btn-sm float-end"><i class="bi bi-pencil"></a></i></td>
+                <td><a href="{% url 'eliminar_unidad_medida' id=unidad.id %}" class="btn btn-danger btn-sm"><i class="bi bi-trash"></i></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <div class="alert alert-primary" role="alert">
+        <strong>No se encuentran unidades en el sistema</strong>
+    </div>
+    {% endif %}
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addUnitModal">
+    Agregar unidad
+  </button>
+  
+  <!-- Modal -->
+  <div class="modal fade" id="addUnitModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Editar unidad</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form id="unitForm" method="POST">
+                <table class="table">
+                    {{ form.as_table }}
+                    {% csrf_token %}
+                </table>
+            </form>
+        </div>
+        <div class="modal-footer">
+          <a href="{% url 'unidad_medida' %}" class="btn btn-secondary">Cerrar</a>
+          <button type="submit" form="unitForm" class="btn btn-primary">Ingresar</button>
+        </div>
+      </div>
+    </div>
+</div>
+  
+
+
+{% endblock %}

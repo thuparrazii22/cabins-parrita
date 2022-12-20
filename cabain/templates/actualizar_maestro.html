@@ -1,0 +1,20 @@
+{% extends 'layout.html' %}
+{% block title %}Actualizar Maestro{% endblock %}
+
+{% block body %}
+<div class="alert alert-info display-1 text-center">Actualizar Maestro</div>
+<form method="POST">
+    <table class="table">
+        {{ form.as_table }}
+        {% csrf_token %}
+
+        <tr>
+            <td>
+                <a href="{% url 'maestro' %}" class="btn btn-outline-secondary">Volver</a>
+            </td>
+            <td>
+                <input type="submit" value="Actualizar Maestro" class="btn btn-primary"></td>
+        </tr>
+    </table>
+</form>
+{% endblock %}

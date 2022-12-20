@@ -1,0 +1,30 @@
+{% extends 'layout.html' %}
+{% block title %}Ingresar{% endblock %}
+
+{% block body %}
+<div class="alert alert-info display-1 text-center">Iniciar sesión</div>
+
+{% if form.errors %}
+<p>El usuario o la contraseña son incorrectos</p>
+{% endif %}
+
+<form method="POST">
+    <table class="table" action={% url 'login' %}>
+        {{ form.as_table }}
+        {% csrf_token %}
+
+        <tr>
+            <td></td>
+            <td><a href="{% url 'registro' %}" class="btn btn-outline-secondary">Registrarse</a></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>
+                <input type="submit" value="Iniciar sesion" class="btn btn-primary"/>
+                <input type="hidden" name="next" value="{{ next }}" />
+            </td>
+        </tr>
+    </table>
+</form>
+<p><a href="{% url 'password_reset' %}">¿Contraseña olvidada?</a></p>
+{% endblock %}

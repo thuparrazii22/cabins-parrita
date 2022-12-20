@@ -1,0 +1,82 @@
+{% extends 'layout.html' %}
+{% block title %}Facturas{% endblock title %}
+{%load static%}
+{% block body %}
+
+<nav class="navbar navbar-expand-lg bg-light" >
+    <div style="margin-rigth: 50px; margin-bottom: 100px;">
+        <img src=  {% static 'img/logo.png' %}></img>
+    </div>
+    <div class="container-fluid" style="margin-left: 400px; margin-bottom: 100px;">
+      <a class="navbar-brand" href="http://127.0.0.1:8000/menu/">Inicio</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <a class="navbar-brand" href="http://127.0.0.1:8000/listado_factura/">Mis facturas</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <a class="navbar-brand" href="http://127.0.0.1:8000/maestro/">Mis maestros</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <a class="navbar-brand" href="http://127.0.0.1:8000/listado_proyecto/">Mis proyectos</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="navbar-brand" id="navbarNavDropdown">
+        <ul class="navbar-nav">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Otros
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="http://127.0.0.1:8000/nuevo_cliente">Nuevo cliente</a></li>
+              <li><a class="dropdown-item" href="http://127.0.0.1:8000/unidad_medida/">Unidades de medida</a></li>
+              <li><a class="dropdown-item" href="http://127.0.0.1:8000/payment_method/">Metodos de pago</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <div class="alert alert-info display-1 text-center">Facturas</div>
+
+{% if items %}
+    {% for item in items %}
+        <div class="card" style="width: 18rem;">
+            <div class="card-body">
+                <h5 class="card-title">{{ item.bill_number}}</h5>
+                <p class="card-text">F.Emision: {{item.emision_date}}</p>
+                <p class="car-text">Rut Proveedor: {{item.supplier_rut}}</p>
+                <p class="car-text">Nombre Proveedor: {{item.supplier_names}}</p>
+                <p class="car-text">Apellido Proveedor: {{item.supplier_last_names}}</p>
+                <p class="car-text">Ciudad: {{item.supplier_city}}</p>
+                <p class="car-text">Comuna: {{item.supplier_commune}}</p>
+                <p class="car-text">Direccion Proveedor: {{item.supplier_address}}</p>
+                <p class="car-text">Cliente: {{item.client}}</p>
+                <p class="car-text">Nombre Vendedor: {{item.seller_name}}</p>
+                <p class="car-text">Apellido Vendedor: {{item.seller_last_name}}</p>
+                <p class="car-text">Observaciones: {{item.observations}}</p>
+                <p class="car-text">Subtotal: {{item.subtotal}}</p>
+                <p class="car-text">IVA: {{item.iva}}</p>
+                <p class="car-text">Total: {{item.total}}</p>
+                <p class="car-text">Metodo de Pago: {{item.payment_method}}</p>
+                <p class="car-text">Fecha Vencimiento: {{item.limit_date}}</p>
+                <p class="car-text">Banco: {{item.bank}}</p>
+                <p class="car-text">IBAN: {{item.iban}}</p>
+                <p class="car-text">Correo Electrónico: {{item.email}}</p>
+                <p class="car-text">Número de contacto: {{item.phone}}</p>
+                <a href="{% url 'proyecto' id=item.id %}" class="btn btn-primary">Detalles</a>
+            </div>
+        </div>
+    {% endfor %}
+          </tbody>
+      </table>
+{% else %}
+      <div class="alert alert-primary" role="alert">
+          <strong>No se encuentran Factura en el sistema</strong>
+      </div>
+{% endif %}
+<a href="{% url 'menu_principal' %}" class="btn btn-outline-secondary">Volver</a>
+{% endblock body %}

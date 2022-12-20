@@ -1,0 +1,102 @@
+{% extends 'layout.html' %}
+{% block title %}Inicio{% endblock %}
+{% load static %} 
+{% block body %}
+
+<nav class="navbar navbar-expand-lg bg-light" >
+    <div style="margin-rigth: 50px; margin-bottom: 100px;">
+        <img src=  {% static 'img/logo.png' %}></img>
+    </div>
+    <div class="container-fluid" style="margin-left: 400px; margin-bottom: 100px;">
+      <a class="navbar-brand" href="http://127.0.0.1:8000/menu/">Inicio</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <a class="navbar-brand" href="http://127.0.0.1:8000/listado_factura/">Mis facturas</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <a class="navbar-brand" href="http://127.0.0.1:8000/maestro/">Mis maestros</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <a class="navbar-brand" href="http://127.0.0.1:8000/listado_proyecto/">Mis proyectos</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="navbar-brand" id="navbarNavDropdown">
+        <ul class="navbar-nav">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Otros
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="http://127.0.0.1:8000/nuevo_cliente">Nuevo cliente</a></li>
+              <li><a class="dropdown-item" href="http://127.0.0.1:8000/unidad_medida/">Unidades de medida</a></li>
+              <li><a class="dropdown-item" href="http://127.0.0.1:8000/payment_method/">Metodos de pago</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+
+<div class="row" style ="margin-bottom: 100px;">
+    <div class="col">
+        <img src=  {% static 'img/proyecto.png' %} class="card-img-top" alt="...">
+        <br>
+        <br>
+        <h2>Registrar proyectos</h2>
+        <br>
+        <div align="justify">
+            <h6>Registre sus proyectos anotando sus nombres, superficie y presupuesto que desea implementar.</h6>
+        </div>
+        <br>
+        <button class="btn p-3 w-100 btn-info dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Proyectos
+        </button>      
+        <ul class="dropdown-menu">
+            <li><a href="{% url 'listado_proyectos' %}" class="dropdown-item" type="button">Ver Proyectos</a></li>
+            <li><a href="{% url 'crear_proyecto' %}" class="dropdown-item" type="button">Nuevo Proyecto</a></li>
+        </ul>
+    </div>
+    <div class="col">
+        <img src=  {% static 'img/facturas.png' %} class="card-img-top" alt="...">
+        <br>
+        <br>
+        <h2>Registrar factura</h2>
+        <br>
+        <div align="justify">
+            <h6>Registre sus facturas para asi tener registro de sus compras a travez que avanza el proyecto-</h6>
+        </div>
+        <br>
+        <button class="btn p-3 w-100 btn-danger dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Facturas
+        </button>      
+        <ul class="dropdown-menu">
+            <li><a href="{% url 'listado_factura' %}" class="dropdown-item" type="button">ver Factura</a></li>
+            <li><a href="{% url 'crear_factura' %}" class="dropdown-item" type="button">Nueva Factura</a></li>
+            <li><a href="{% url 'nuevo_detalle_factura' %}" class="dropdown-item" type="button">Nueva detalle Factura</a></li>
+        </ul>
+    </div>
+    <div class="col">
+        <img src=  {% static 'img/extras1.png' %} class="card-img-top" alt="...">
+        <br>
+        <br>
+        <h2>Registrar proyecto/producto</h2>
+        <br>
+        <div align="justify">
+            <h6>Vea o registre sus maestros anotando sus nombres y telefono.</h6>
+        </div>
+        <br>
+        <button class="btn p-3 w-100 btn-success dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Extras 
+        </button>      
+        <ul class="dropdown-menu">
+            <li><a href="{% url 'maestro' %}" class="dropdown-item" type="button">Maestros</a></li>
+            <li><a href="{% url 'producto' %}" class="dropdown-item" type="button">Productos</a></li>
+        </ul>
+    </div>
+</div>
+{% endblock %}

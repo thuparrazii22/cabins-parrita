@@ -1,0 +1,73 @@
+{% extends 'layout.html' %}
+{%load static%}
+{% block title %}Regiones{% endblock %}
+
+{% block body %}
+
+<nav class="navbar navbar-expand-lg bg-light" >
+    <div style="margin-rigth: 50px; margin-bottom: 100px;">
+        <img src=  {% static 'img/logo.png' %}></img>
+    </div>
+    <div class="container-fluid" style="margin-left: 400px; margin-bottom: 100px;">
+      <a class="navbar-brand" href="http://127.0.0.1:8000/menu/">Inicio</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <a class="navbar-brand" href="http://127.0.0.1:8000/listado_factura/">Mis facturas</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <a class="navbar-brand" href="http://127.0.0.1:8000/maestro/">Mis maestros</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <a class="navbar-brand" href="http://127.0.0.1:8000/listado_proyecto/">Mis proyectos</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="navbar-brand" id="navbarNavDropdown">
+        <ul class="navbar-nav">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Otros
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="http://127.0.0.1:8000/nuevo_cliente">Nuevo cliente</a></li>
+              <li><a class="dropdown-item" href="http://127.0.0.1:8000/unidad_medida/">Unidades de medida</a></li>
+              <li><a class="dropdown-item" href="http://127.0.0.1:8000/payment_method/">Metodos de pago</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+<div class="alert alert-info display-1 text-center">Listado de regiones</div>
+    {% if regiones %}
+    <table class="table table-striped table-inverse table-responsive">
+        <thead class="thead-inverse">
+            <tr>
+                <th>Id</th>
+                <th>Nombre Región</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for region in regiones %}
+            <tr>
+                <td>{{ region.id }}</td>
+                <td>{{ region.region_name}}</td>
+                <td><a href="/eliminar_region/{{ reserva.id }}" class="btn btn-danger btn-sm"><i class="bi bi-trash"></i></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <div class="alert alert-primary" role="alert">
+        <strong>No se encuentran regiones en el sistema</strong>
+    </div>
+    {% endif %}
+
+    <a href="{% url 'listado_regiones' %}" class="btn btn-outline-danger">VOLVER</a>
+    <a href="{% url 'ingresar_region' %}" class="btn btn-primary float-end">AGREGAR REGION</a>
+
+{% endblock %}

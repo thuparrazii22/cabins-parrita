@@ -1,0 +1,140 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% block title %}Ingresar{% endblock %}
+
+{% block head %}
+<script src="{% static 'js/functions.js' %}"></script>
+{% endblock %}
+
+{% block body %}
+<nav class="navbar navbar-expand-lg bg-light" >
+  <div style="margin-rigth: 50px; margin-bottom: 100px;">
+      <img src=  {% static 'img/logo.png' %}></img>
+  </div>
+  <div class="container-fluid" style="margin-left: 400px; margin-bottom: 100px;">
+    <a class="navbar-brand" href="http://127.0.0.1:8000/menu/">Inicio</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <a class="navbar-brand" href="http://127.0.0.1:8000/listado_factura/">Mis facturas</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <a class="navbar-brand" href="http://127.0.0.1:8000/maestro/">Mis maestros</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <a class="navbar-brand" href="http://127.0.0.1:8000/listado_proyecto/">Mis proyectos</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="navbar-brand" id="navbarNavDropdown">
+      <ul class="navbar-nav">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Otros
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="http://127.0.0.1:8000/nuevo_cliente">Nuevo cliente</a></li>
+            <li><a class="dropdown-item" href="http://127.0.0.1:8000/unidad_medida/">Unidades de medida</a></li>
+            <li><a class="dropdown-item" href="http://127.0.0.1:8000/payment_method/">Metodos de pago</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="alert alert-info display-1 text-center">Unidades de Medida</div>
+
+{% if unidades %}
+    <table class="table table-striped table-inverse table-responsive">
+        <thead class="thead-inverse">
+            <tr>
+                <th>Id</th>
+                <th>Nombre unidad</th>
+                <th>Símbolo</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for unidad in unidades %}
+            <tr>
+                <td>{{ unidad.id }}</td>
+                <td>{{ unidad.unit_name}}</td>
+                <td>{{ unidad.symbol }}</td>
+                <td><a href="{% url 'actualizar_unidad_medida' id=unidad.id %}" class="btn btn-success btn-sm float-end"><i class="bi bi-pencil"></i></a></td>
+                <td>
+                    <button type="button" onclick="url='{% url "eliminar_unidad_medida" id=unidad.id %}';setIdDelete('{{ unidad.id }}', '{{ unidad.unit_name }}', url);" class="btn btn-danger btn-sm float-start" data-bs-toggle="modal" data-bs-target="#deleteUnitModal">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <div class="alert alert-primary" role="alert">
+        <strong>No se encuentran unidades en el sistema</strong>
+    </div>
+    {% endif %}
+
+    <table class="table">
+      <tr>
+          <td>
+              <a href="{% url 'menu_principal' %}" class="btn btn-outline-secondary">Volver</a>
+          </td>
+          <td>
+            <button type="button" class="btn btn-primary float-end" data-bs-toggle="modal" data-bs-target="#addUnitModal">
+              Agregar unidad
+          </button>
+          </td>    
+      </tr>
+  </table>
+
+<!-- Modal Ingresar unidad -->
+<div class="modal fade" id="addUnitModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Ingresar unidad</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form id="unitForm" method="POST">
+                <table class="table">
+                    {{ form.as_table }}
+                    {% csrf_token %}
+                </table>
+            </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          <button type="submit" form="unitForm" class="btn btn-primary">Ingresar</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+  
+<!-- Modal eliminar dato -->
+<div class="modal fade" id="deleteUnitModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Eliminar unidad</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            ¿Estás seguro que deseas eliminar?
+            <p id="datoEliminado"></p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          <a id="deleteConfirm" href="" class="btn btn-danger">Eliminar</a>
+        </div>
+      </div>
+    </div>
+</div>
+
+
+{% endblock %}
