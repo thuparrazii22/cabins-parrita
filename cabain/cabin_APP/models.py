@@ -63,7 +63,7 @@ class Client(models.Model):
     client_address = models.CharField(max_length=60, verbose_name='Dirección')
 
     def __str__(self):
-        return self.client_name
+        return f'{self.client_name} {self.client_last_name}'
 
 class Proveedor(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -79,7 +79,7 @@ class Proveedor(models.Model):
 
 class Bill(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    bill_number = models.IntegerField(verbose_name='Número de factura')
+    bill_number = models.IntegerField(verbose_name='Número de factura', unique=True)
     emision_date = models.DateTimeField(verbose_name='Fecha de emisión')
     supplier = models.ForeignKey(Proveedor, on_delete=models.CASCADE, verbose_name='Proveedor')
     client = models.ForeignKey(Client, on_delete=models.CASCADE, verbose_name='Cliente')
@@ -97,12 +97,12 @@ class Bill(models.Model):
     phone = models.CharField(max_length=20, verbose_name='Número de contacto')
 
     def __str__(self):
-        return self.bill_number
+        return str(self.bill_number)
 
 class BillDetail(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     bill = models.ForeignKey(Bill, on_delete=models.CASCADE, verbose_name='Número factura')
-    correlative = models.IntegerField(verbose_name='Correlativo')
+    correlative = models.IntegerField(verbose_name='Correlativo', unique=True)
     product = models.ForeignKey(Product, on_delete=models.CASCADE, verbose_name='Producto')
     description = models.CharField(max_length=120 , verbose_name='Descripción', blank=True, null=True)
     quantity = models.IntegerField(verbose_name='Cantidad')

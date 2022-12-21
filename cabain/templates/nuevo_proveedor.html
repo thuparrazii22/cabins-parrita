@@ -1,5 +1,5 @@
 {% extends 'layout.html' %}
-{% block title %}Crear Cliente{% endblock %}
+{% block title %}Crear Proveedor{% endblock %}
 {% load static %}
 {% block body %}
 <nav class="navbar navbar-expand-lg bg-light" >
@@ -40,7 +40,7 @@
     </div>
   </nav>
 
-<div class="alert alert-info display-1 text-center">Crear Cliente</div>
+<div class="alert alert-info display-1 text-center">Crear Proveedor</div>
 <form method="POST">
     <table class="table">
         {{ form.as_table }}
@@ -51,7 +51,7 @@
                 <a href="{% url 'menu_principal' %}" class="btn btn-outline-secondary">Volver</a>
             </td>
             <td>
-                <input type="submit" value="Crear Factura" class="btn btn-primary"></td>
+                <input type="submit" value="Crear Proveedor" class="btn btn-primary"></td>
         </tr>
     </table>
 </form>

@@ -1,6 +1,6 @@
 {% extends 'layout.html' %}
 {% load static %}
-{% block title %}{{proyecto}}{% endblock %}
+{% block title %}Detalle factura{% endblock %}
 
 {% block head %}
 <script src="{% static 'js/functions.js' %}"></script>
@@ -45,26 +45,35 @@
   </div>
 </nav>
 
-<div class="alert alert-info display-1 text-center">{{proyecto.project_name}}</div>
-<h2>Materiales</h2>
-{% if materiales %}
+<div class="alert alert-info display-1 text-center">Detalle de Factura</div>
+<p><strong>Numero de factura:</strong> {{ bill }}</p>
+{% if items %}
     <table class="table table-striped table-inverse table-responsive">
         <thead class="thead-inverse">
             <tr>
-                <th>Id</th>
+                <th>Correlativo</th>
                 <th>Nombre producto</th>
+                <th>Descripcion</th>
                 <th>Cantidad</th>
+                <th>Precio unitario</th>
+                <th>Descuento</th>
+                <th>Total</th>
             </tr>
         </thead>
         <tbody>
-            {% for item in materiales %}
+            {% for item in items %}
             <tr>
-                <td>{{ item.id }}</td>
+                <td>{{ item.correlative }}</td>
                 <td>{{ item.product}}</td>
-                <td>{{ item.quantity }}</td>
+                <td>{{ item.description }}</td>
+                <td>{{ item.quantity }} {{item.product.measure_unit}}</td>
+                <td>{{ item.unitary_price }}</td>
+                <td>{{ item.descuento }}</td>
+                <td>{{ item.total }}</td>
+
                 <td><a href="" class="btn btn-success btn-sm float-end"><i class="bi bi-pencil"></i></a></td>
                 <td>
-                    <button type="button" onclick="url='{% url "eliminar_producto" id=item.id %}';setIdDelete('{{ item.id }}', '{{ item.product_name }}', url);" class="btn btn-danger btn-sm float-start" data-bs-toggle="modal" data-bs-target="#deleteItemModal">
+                    <button type="button" onclick="url='{% url "eliminar_detalle_factura" id=item.id %}';setIdDelete('{{ item.id }}', '{{ item.product }}', url);" class="btn btn-danger btn-sm float-start" data-bs-toggle="modal" data-bs-target="#deleteItemModal">
                         <i class="bi bi-trash"></i>
                     </button>
                 </td>
@@ -74,71 +83,25 @@
     </table>
     {% else %}
     <div class="alert alert-primary" role="alert">
-        <strong>No se encuentran materiales en el sistema</strong>
-    </div>
-    {% endif %}
-    <table class="table">
-      <tr>
-          <td>
-          </td>
-          <td>
-            <button type="button" class="btn btn-primary float-end" data-bs-toggle="modal" data-bs-target="#addMaterialModal">
-              Agregar Material
-          </button>
-          </td>    
-      </tr>
-  </table>
-<h2>Trabajos</h2>
-    {% if trabajos %}
-    <table class="table table-striped table-inverse table-responsive">
-        <thead class="thead-inverse">
-            <tr>
-                <th>Id</th>
-                <th>Nombre trabajador</th>
-                <th>Trabajo</th>
-                <th>Pago</th>
-                <th>Deuda</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for item in trabajos %}
-            <tr>
-                <td>{{ item.id }}</td>
-                <td>{{ item.worker}}</td>
-                <td>{{ item.work }}</td>
-                <td>{{ item.payment }}</td>
-                <td>{{ item.balance }}</td>
-                <td><a href="" class="btn btn-success btn-sm float-end"><i class="bi bi-pencil"></i></a></td>
-                <td>
-                    <button type="button" onclick="url='{% url "eliminar_producto" id=item.id %}';setIdDelete('{{ item.id }}', '{{ item.product_name }}', url);" class="btn btn-danger btn-sm float-start" data-bs-toggle="modal" data-bs-target="#deleteItemModal">
-                        <i class="bi bi-trash"></i>
-                    </button>
-                </td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    {% else %}
-    <div class="alert alert-primary" role="alert">
-        <strong>No se encuentran trabajos en el sistema</strong>
+        <strong>No se encuentran productos asignados a esta factura</strong>
     </div>
     {% endif %}
 
     <table class="table">
       <tr>
           <td>
-              <a href="{% url 'listado_proyectos' %}" class="btn btn-outline-secondary">Volver</a>
+              <a href="{% url 'listado_factura' %}" class="btn btn-outline-secondary">Volver</a>
           </td>
           <td>
-            <button type="button" class="btn btn-primary float-end" data-bs-toggle="modal" data-bs-target="#addTrabajoModal">
-              Agregar Trabajo
+            <button type="button" class="btn btn-primary float-end" data-bs-toggle="modal" data-bs-target="#addItemModal">
+              Agregar producto
           </button>
           </td>    
       </tr>
   </table>
 
 <!-- Modal Ingresar Item -->
-<div class="modal fade" id="addMaterialModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="addItemModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
@@ -146,48 +109,19 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-            <form id="materialForm" method="POST" action="{% url 'crear_material' id=proyecto.id %}">
+            <form id="itemForm" method="POST">
                 <table class="table">
-                    {{ form_material.as_table }}
+                    {{ form.as_table }}
                     {% csrf_token %}
-                    <tr>
-                        <td>
-                            <a href="{% url 'unidad_medida' %}" class="btn btn-secondary">Añadir unidad de medida</a>
-                        </td>
-                    </tr>
                 </table>
             </form>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-          <button type="submit" form="materialForm" class="btn btn-primary">Ingresar</button>
+          <button type="submit" form="itemForm" class="btn btn-primary">Ingresar</button>
         </div>
       </div>
     </div>
-</div>
-
-<!-- Modal Ingresar Item -->
-<div class="modal fade" id="addTrabajoModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">Ingresar trabajo</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-          <form id="trabajoForm" method="POST" action="{% url 'crear_trabajo' id=proyecto.id %}">
-              <table class="table">
-                  {{ form_trabajo.as_table }}
-                  {% csrf_token %}
-              </table>
-          </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-        <button type="submit" form="trabajoForm" class="btn btn-primary">Ingresar</button>
-      </div>
-    </div>
-  </div>
 </div>
 
   

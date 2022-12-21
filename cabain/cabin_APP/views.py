@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
-from cabin_APP.forms import FormUser, FormClient, FormBillDetail, FormBill, FormProduct, FormCreateProject, FormPaymentMethod, FormUnidadMedida, FormWorker
-from cabin_APP.models import Bill, Product, Region, City, Project, PaymentMethod, MeasureUnit, Worker
+from .forms import *
+from .models import *
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 
@@ -59,15 +59,48 @@ def listado_proyectos(request):
     return render(request, 'listado_proyectos.html', context)
 
 @login_required
+def eliminar_proyecto(request, id):
+    proyectos = Project.objects.get(id=id)
+    proyectos.delete()
+    return redirect(proyecto)
+
+@login_required
 def proyecto(request, id):
     proyecto = Project.objects.get(id=id)
-    nombre_proyecto = proyecto.project_name
+    materiales = ProjectDetail.objects.filter(user=request.user, project=proyecto)
+    trabajos = ProjectWorker.objects.filter(user=request.user, project=proyecto)
+    form_material = FormProjectDetail(initial={'user':request.user,'project':proyecto})
+    form_trabajo = FormProjectWorker(initial={'user':request.user,'project':proyecto})
     context = {
-        'nombre_proyecto': nombre_proyecto
+        'proyecto': proyecto,
+        'materiales': materiales,
+        'trabajos': trabajos,
+        'form_material': form_material,
+        'form_trabajo': form_trabajo
     }
     return render(request, 'proyecto.html', context)
 
-###############DETALLE PROYECTO#################################
+@login_required
+def crear_material(request,id):
+    proyecto_selec = Project.objects.get(id=id)
+    if request.method == 'POST':
+        form_material = FormProjectDetail(request.POST, initial={'user':request.user,'project':proyecto_selec})
+        if form_material.is_valid():
+            form_material.save()
+            return redirect(proyecto, id=id)
+    return redirect(proyecto, id=id)
+
+@login_required
+def crear_trabajo(request,id):
+    proyecto_selec = Project.objects.get(id=id)
+    if request.method == 'POST':
+        form = FormProjectWorker(request.POST, initial={'user':request.user,'project':proyecto_selec})
+        if form.is_valid():
+            form.save()
+            return redirect(proyecto, id=id)
+    return redirect(proyecto, id=id)
+
+
 
 #################METODO DE PAGO#################################
 
@@ -239,7 +272,8 @@ def crear_factura(request):
             return redirect(crear_factura)
         if form.is_valid():
             form.save()
-            return redirect(listado_factura)
+            id_bill = Bill.objects.filter(bill_number=form.data['bill_number'])[0].id 
+            return redirect(detalle_factura, id=id_bill)
     context = {'form': form}
     return render(request, 'nuevaFactura.html', context)
 
@@ -265,6 +299,33 @@ def crear_deatalle_factura(request):
     context = {'form': form}
     return render(request, 'nuevo_detalle_factura.html', context)
 
+@login_required
+def eliminar_detalle_factura(request, id):
+    bill = Bill.objects.get(id=id)
+    bill.delete()
+    return redirect(detalle_factura)
+
+@login_required
+def detalle_factura(request, id):
+    bill = Bill.objects.get(id=id)
+    initial={
+            'user': request.user, 
+            'bill': bill
+            }
+    detalle = BillDetail.objects.filter(user=request.user, bill=bill)
+    form = FormBillDetail(initial=initial)
+    if request.method == 'POST':
+        form = FormBillDetail(request.POST, initial=initial)
+        if form.is_valid():
+            form.save()
+            return redirect(detalle_factura, id=id)
+    context = {
+        'form': form,
+        'items': detalle,
+        'bill': bill
+    }
+    return render(request, 'listado_detalle_factura.html', context)
+
 
 #####################CLIENTE###################################################
 
@@ -282,9 +343,19 @@ def crear_cliente(request):
 
 
 
-###################TRABAJO MAESTRO##############################################
+####################PROVEEDOR###################################################
 
 
+@login_required
+def crear_proveedor(request):
+    form = FormProveedor(initial={'user': request.user})
+    if request.method == 'POST':
+        form = FormProveedor(request.POST, initial={'user': request.user})
+        if form.is_valid():
+            form.save()
+            return redirect(listado_factura)
+    context = {'form': form}
+    return render(request, 'nuevo_proveedor.html', context)
 
 
 

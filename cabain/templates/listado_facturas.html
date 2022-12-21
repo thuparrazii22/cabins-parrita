@@ -2,7 +2,6 @@
 {% block title %}Facturas{% endblock title %}
 {%load static%}
 {% block body %}
-
 <nav class="navbar navbar-expand-lg bg-light" >
     <div style="margin-rigth: 50px; margin-bottom: 100px;">
         <img src=  {% static 'img/logo.png' %}></img>
@@ -40,39 +39,37 @@
       </div>
     </div>
   </nav>
+
   <div class="alert alert-info display-1 text-center">Facturas</div>
 
 {% if items %}
-    {% for item in items %}
-        <div class="card" style="width: 18rem;">
-            <div class="card-body">
-                <h5 class="card-title">{{ item.bill_number}}</h5>
-                <p class="card-text">F.Emision: {{item.emision_date}}</p>
-                <p class="car-text">Rut Proveedor: {{item.supplier_rut}}</p>
-                <p class="car-text">Nombre Proveedor: {{item.supplier_names}}</p>
-                <p class="car-text">Apellido Proveedor: {{item.supplier_last_names}}</p>
-                <p class="car-text">Ciudad: {{item.supplier_city}}</p>
-                <p class="car-text">Comuna: {{item.supplier_commune}}</p>
-                <p class="car-text">Direccion Proveedor: {{item.supplier_address}}</p>
-                <p class="car-text">Cliente: {{item.client}}</p>
-                <p class="car-text">Nombre Vendedor: {{item.seller_name}}</p>
-                <p class="car-text">Apellido Vendedor: {{item.seller_last_name}}</p>
-                <p class="car-text">Observaciones: {{item.observations}}</p>
-                <p class="car-text">Subtotal: {{item.subtotal}}</p>
-                <p class="car-text">IVA: {{item.iva}}</p>
-                <p class="car-text">Total: {{item.total}}</p>
-                <p class="car-text">Metodo de Pago: {{item.payment_method}}</p>
-                <p class="car-text">Fecha Vencimiento: {{item.limit_date}}</p>
-                <p class="car-text">Banco: {{item.bank}}</p>
-                <p class="car-text">IBAN: {{item.iban}}</p>
-                <p class="car-text">Correo Electrónico: {{item.email}}</p>
-                <p class="car-text">Número de contacto: {{item.phone}}</p>
-                <a href="{% url 'proyecto' id=item.id %}" class="btn btn-primary">Detalles</a>
-            </div>
+    <div class="container">
+        <div class="row row-cols-4">
+                {% for item in items %}
+                <div class="col">
+                <div class="card" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title"><strong>N° Factura:</strong> {{ item.bill_number}}</h5>
+                        <p class="card-text">F.Emision: {{item.emision_date}}</p>
+                        <p class="car-text">Proveedor: {{item.supplier}}</p>
+                        <p class="car-text">Cliente: {{item.client}}</p>
+                        <p class="car-text">Nombre Vendedor: {{item.seller_name}} {{item.seller_last_name}}</p>
+                        <p class="car-text">Observaciones: {{item.observations}}</p>
+                        <p class="car-text">Total: {{item.total}}</p>
+                        <p class="car-text">Metodo de Pago: {{item.payment_method}}</p>
+                        <p class="car-text">Fecha Vencimiento: {{item.limit_date}}</p>
+                        <p class="car-text">Correo Electrónico: {{item.email}}</p>
+                        <p class="car-text">Número de contacto: {{item.phone}}</p>
+                        <a href="{% url 'detalle_factura' id=item.id %}" class="btn btn-primary">Detalles</a>
+                    </div>
+                </div>
+                <br>
+                </div>
+                {% endfor %}
+            
         </div>
-    {% endfor %}
-          </tbody>
-      </table>
+    </div>
+    
 {% else %}
       <div class="alert alert-primary" role="alert">
           <strong>No se encuentran Factura en el sistema</strong>

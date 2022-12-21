@@ -21,3 +21,9 @@ function dismissModal(modalId){
     modal.style = 'display: none;'
     dismissDiv('modalBack');
 }
+
+function setPrecioTotal(){
+    cantidad = document.getElementById('id_quantity').value;
+    precio = document.getElementById('id_unitary_price').value;
+    document.getElementById('id_total').value = cantidad * precio;
+}

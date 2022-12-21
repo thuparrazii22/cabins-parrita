@@ -1,8 +1,9 @@
 from django import forms
-from cabin_APP.models import Client, BillDetail, Product, Region, City, Project, PaymentMethod, MeasureUnit, Worker, Bill
+from .models import *
 from django.contrib.auth.models import User
 
 class FormUser(forms.ModelForm):
+    #contrasena2 = forms.CharField(max_length=100)
     class Meta:
         model = User
         widgets = {
@@ -72,13 +73,47 @@ class FormBillDetail(forms.ModelForm):
     class Meta:
         model = BillDetail
         widgets = {
-            'user': forms.HiddenInput
+            'user': forms.HiddenInput,
+            'quantity': forms.NumberInput(
+                attrs={
+                    'onkeyup': 'setPrecioTotal();'
+                }
+            ),
+            'unitary_price': forms.NumberInput(
+                attrs={
+                    'onkeyup': 'setPrecioTotal();'
+                }
+            )
         }
         fields = '__all__'
 
 class FormClient(forms.ModelForm):
     class Meta:
         model = Client
+        widgets = {
+            'user': forms.HiddenInput
+        }
+        fields = '__all__'
+
+class FormProveedor(forms.ModelForm):
+    class Meta:
+        model = Proveedor
+        widgets = {
+            'user': forms.HiddenInput
+        }
+        fields = '__all__'
+
+class FormProjectDetail(forms.ModelForm):
+    class Meta:
+        model = ProjectDetail
+        widgets = {
+            'user': forms.HiddenInput
+        }
+        fields = '__all__'
+
+class FormProjectWorker(forms.ModelForm):
+    class Meta:
+        model = ProjectWorker
         widgets = {
             'user': forms.HiddenInput
         }
